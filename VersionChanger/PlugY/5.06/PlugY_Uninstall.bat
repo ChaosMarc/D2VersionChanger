@@ -1,0 +1,1 @@
+@PlugY_Install.exe -u
