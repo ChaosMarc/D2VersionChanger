@@ -54,7 +54,7 @@ if exist old_version rm old_version
 :parse
 if "%~1"=="" goto :MainMenu
 set "StartGame=true"
-echo "%~1"| FIND /I "=" && SET "%~1"
+echo "%~1"| %WINDIR%\System32\FIND /I "=" && SET "%~1"
 shift /1
 goto parse
 
