@@ -1,6 +1,6 @@
 @echo off
 
-set changerversion=4.3.1
+set changerversion=4.3.2
 
 title Diablo 2 Version Changer %changerversion% by ChaosMarc
 setlocal EnableDelayedExpansion

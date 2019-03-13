@@ -15,6 +15,8 @@ Run the VersionChanger.bat and select a number/character in square brackets at t
 For questions or suggestions please create an issue at [Github](https://github.com/ChaosMarc/D2VersionChanger) or email me: chaosmarc@gmx.de
 
 ## Changelog
+- v4.3.2
+    - added absolute path to find executable to avoid conflicts with linux find executable already in path (thanks @leo-liar)
 - v4.3.1
     - Fix: The PlugY subfolder was not copied correctly
 - v4.3
