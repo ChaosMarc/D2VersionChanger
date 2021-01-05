@@ -6,7 +6,7 @@ With this tool you are able to switch easily between all patch versions of Diabl
 - Unpack the VersionChanger.7z into your Diablo 2 install-folder (default: C:\Program Files (x86)\Diablo II)
 - For unpacking I recommend [7zip](http://www.7-zip.org/)
 
-**Caution**: If installed with the new v1.14 digital installers by Blizzard you cannot downgrade your Diablo 2 installation to older patches. When starting the game you will receive only an empty error window. To fix this either use the included MPQFix or install the game with your CDs or the old v1.12 digital installers which can be downloaded in all official languages [here](https://mega.nz/#F!VIth1DKQ!Q42bVsCGQZ4UhoGjqvHxGw)
+**Caution**: If installed with the new v1.14 digital installers by Blizzard you cannot downgrade your Diablo 2 installation to older patches. When starting the game you will receive only an empty error window. To fix this either use the included MPQFix [8] or install the game with your CDs or the old v1.12 digital installers which can be downloaded in all official languages [here](https://mega.nz/#F!VIth1DKQ!Q42bVsCGQZ4UhoGjqvHxGw)
 
 ## Usage
 Run the VersionChanger.bat and select a number/character in square brackets at the beginning of a line.
@@ -15,6 +15,8 @@ Run the VersionChanger.bat and select a number/character in square brackets at t
 For questions or suggestions please create an issue at [Github](https://github.com/ChaosMarc/D2VersionChanger) or email me: chaosmarc@gmx.de
 
 ## Changelog
+- v4.4
+    - replaced PlugY v5.06 and v11.02 with v14.01
 - v4.3.2
     - added absolute path to find executable to avoid conflicts with linux find executable already in path (thanks @leo-liar)
 - v4.3.1

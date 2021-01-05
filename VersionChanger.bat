@@ -1,8 +1,9 @@
 @echo off
 
-set changerversion=4.3.2
+set ChangerVersion=4.4
+set PlugYVersion=14.01
 
-title Diablo 2 Version Changer %changerversion% by ChaosMarc
+title Diablo 2 Version Changer %ChangerVersion% by ChaosMarc
 setlocal EnableDelayedExpansion
 
 NET FILE 1>NUL 2>NUL
@@ -59,17 +60,17 @@ shift /1
 goto parse
 
 :MainMenu
-set "invalidPlugyVersion="
+set "invalidPlugYVersion="
 if defined mode (
     if not defined version (
-		set "invalidPlugyVersion=true"
+		set "invalidPlugYVersion=true"
 	)
 ) else (
 	if defined version (
-		set "invalidPlugyVersion=true"
+		set "invalidPlugYVersion=true"
 	)
 )
-if defined invalidPlugyVersion (
+if defined invalidPlugYVersion (
 	echo.
 	echo You need to define mode AND version
 	echo.
@@ -84,29 +85,17 @@ if defined plugy (
 		goto :Pause
 	)
 
-	if "%mode%"=="Classic" echo. && echo PlugY is only compatible with LoD && set "plugy=" && echo. && set "PlugySetupMode=" && goto :Pause
-	
-	if "%plugy%"=="5.06" (
-		if not defined PlugySetupMode set "PlugySetupMode=D2gfx.dll"
-		if "%PlugySetupMode%"=="PlugY.exe" echo. && echo PlugY 5.06 has to use the setup mode [D2gfx.dll] && echo. && set "PlugySetupMode=D2gfx.dll" && goto :Pause
-	)
+	if "%mode%"=="Classic" echo. && echo PlugY is only compatible with LoD && set "plugy=" && echo. && set "PlugYSetupMode=" && goto :Pause
 
-	if not "%PlugySetupMode%"=="PlugY.exe" if not "%PlugySetupMode%"=="D2gfx.dll" echo. && echo You have to choose a PlugY setup mode [PlugY.exe / D2gfx.dll] && echo. && goto :Pause
+	if not "%PlugYSetupMode%"=="PlugY.exe" if not "%PlugYSetupMode%"=="PatchD2File.exe" echo. && echo You have to choose a PlugY setup mode [PlugY.exe / PatchD2File.exe] && echo. && goto :Pause
 
 	if defined version (
-		set "validPlugyVersion="
-		if "%plugy%"=="5.06" (
-			for %%a in (1.09 1.09b 1.09d 1.10) do (
-				if "%%a"=="%version%" set "validPlugyVersion=true"
-			)
-			if not defined validPlugyVersion echo. && echo PlugY 5.06 is not compatible with version %version% && echo. && set "plugy=" && set "PlugySetupMode=" && goto :Pause
+		set "validPlugYVersion="
+		for %%a in (1.09 1.09b 1.09d 1.10 1.11 1.11b 1.12a 1.13c 1.13d 1.14d) do (
+			if "%%a"=="%version%" set "validPlugYVersion=true"
 		)
-		if "%plugy%"=="11.02" (
-			for %%a in (1.09 1.09b 1.09d 1.10 1.11 1.11b 1.12a 1.13c 1.13d) do (
-				if "%%a"=="%version%" set "validPlugyVersion=true"
-			)
-			if not defined validPlugyVersion echo. && echo PlugY 11.02 is not compatible with version %version% && echo. && set "plugy=" && set "PlugySetupMode=" && goto :Pause
-		)
+		if not defined validPlugYVersion echo. && echo PlugY %PlugYVersion% is not compatible with version %version% && echo. && set "plugy=" && set "PlugYSetupMode=" && goto :Pause
+		
 	)
 )
 
@@ -114,12 +103,12 @@ if defined StartGame goto :ApplyChanges
 
 cls
 echo.===============================================================================
-echo.                       Version Changer v%changerversion% by ChaosMarc                       
+echo.                       Version Changer v%ChangerVersion% by ChaosMarc                       
 echo.===============================================================================
 echo.
 echo.	[1]   Choose version [%mode%] [%version%]
 echo.
-echo.	[2]   Use PlugY [%plugy%] [%PlugySetupMode%]
+echo.	[2]   Use PlugY [%plugy%] [%PlugYSetupMode%]
 echo.	[3]   Set launch parameter [%parameter%]
 echo.	[4]   Set executable [%exe%] (Default: game.exe)
 echo.
@@ -141,7 +130,7 @@ if errorlevel 6 goto :ApplyChanges
 if errorlevel 5 goto :CreateShortcutMenu
 if errorlevel 4 goto :CustomExeMenu
 if errorlevel 3 goto :LauchParameterMenu
-if errorlevel 2 goto :PlugYSetupMenu
+if errorlevel 2 goto :PlugYSetupModeMenu
 if errorlevel 1 goto :ChooseModeMenu
 
 :ChooseModeMenu
@@ -324,41 +313,22 @@ if defined CustomExe set "exe=%CustomExe%"
 set CustomExe=
 goto :MainMenu
 
-:PlugYSetupMenu
+:PlugYSetupModeMenu
 cls
 echo.===============================================================================
-echo.                                 Install PlugY                                 
+echo.                     Choose PlugY v%PlugYVersion% Install Mode                     
 echo.===============================================================================
 echo.
-echo.	[1]  v5.06 (1.09 - 1.10)
-echo.	[2]  v11.02 (1.09 - 1.13d)
-echo.	[3]  None
-echo.
-echo.	[0]  Go Back
-echo.
-echo.===============================================================================
-choice /C:12340 /N /M "Enter Your Choice : "
-if errorlevel 4 goto :MainMenu
-if errorlevel 3 set "plugy=" && set "PlugySetupMode=" && goto :MainMenu
-if errorlevel 2 set "plugyTMP=11.02" && goto :PlugySetupModeMenu
-if errorlevel 1 set "plugy=5.06" && set "PlugySetupMode=D2gfx.dll" && goto :MainMenu
-
-:PlugySetupModeMenu
-cls
-echo.===============================================================================
-echo.                     Choose PlugY v%plugyTMP% Install Mode                     
-echo.===============================================================================
-echo.
-echo.	[1]  Patch D2gfx.dll
-echo.	[2]  Use PlugY.exe
+echo.	[1]  Use PlugY.exe
+echo.	[2]  Use PatchD2File.exe (run game.exe / Diablo II.exe)
 echo.
 echo.	[0]  Go Back
 echo.
 echo.===============================================================================
 choice /C:120 /N /M "Enter Your Choice : "
-if errorlevel 3 goto :PlugYSetupMenu
-if errorlevel 2 set "plugy=%plugyTMP%" && set "PlugySetupMode=PlugY.exe" && goto :MainMenu
-if errorlevel 1 set "plugy=%plugyTMP%" && set "PlugySetupMode=D2gfx.dll" && goto :MainMenu
+if errorlevel 3 goto :MainMenu
+if errorlevel 2 set "plugy=%PlugYVersion%" && set "PlugYSetupMode=PatchD2File.exe" && goto :MainMenu
+if errorlevel 1 set "plugy=%PlugYVersion%" && set "PlugYSetupMode=PlugY.exe" && goto :MainMenu
 
 :CreateShortcutMenu
 cls
@@ -398,13 +368,13 @@ if %WinVersion% lss 6 (
 )
 
 if defined CreateShortcutDesktop (
-	powershell "$s=(New-Object -COM WScript.Shell).CreateShortcut('%ShortCutPathDesktop%.lnk');$s.TargetPath='%~f0';$s.WorkingDirectory='%~dp0';$s.IconLocation='%~dp0\Diablo II.exe, 0';$s.Arguments='"""mode=%mode%""" """version=%version%""" """plugy=%plugy%""" """PlugySetupMode=%PlugySetupMode%""" """exe=%exe%""" """parameter=%parameter%"""';$s.Save()"
+	powershell "$s=(New-Object -COM WScript.Shell).CreateShortcut('%ShortCutPathDesktop%.lnk');$s.TargetPath='%~f0';$s.WorkingDirectory='%~dp0';$s.IconLocation='%~dp0\Diablo II.exe, 0';$s.Arguments='"""mode=%mode%""" """version=%version%""" """plugy=%plugy%""" """PlugYSetupMode=%PlugYSetupMode%""" """exe=%exe%""" """parameter=%parameter%"""';$s.Save()"
 	echo.
 	echo.Desktop shortcut successfully created
 )
 
 if defined CreateShortcutStartmenu (
-	powershell "$s=(New-Object -COM WScript.Shell).CreateShortcut('%ShortCutPathStartmenu%.lnk');$s.TargetPath='%~f0';$s.WorkingDirectory='%~dp0';$s.IconLocation='%~dp0\Diablo II.exe, 0';$s.Arguments='"""mode=%mode%""" """version=%version%""" """plugy=%plugy%""" """PlugySetupMode=%PlugySetupMode%""" """exe=%exe%""" """parameter=%parameter%"""';$s.Save()"
+	powershell "$s=(New-Object -COM WScript.Shell).CreateShortcut('%ShortCutPathStartmenu%.lnk');$s.TargetPath='%~f0';$s.WorkingDirectory='%~dp0';$s.IconLocation='%~dp0\Diablo II.exe, 0';$s.Arguments='"""mode=%mode%""" """version=%version%""" """plugy=%plugy%""" """PlugYSetupMode=%PlugYSetupMode%""" """exe=%exe%""" """parameter=%parameter%"""';$s.Save()"
 	echo.
 	echo.Start Menu shortcut successfully created
 )
@@ -450,12 +420,8 @@ echo.Installed PlugY %plugy%
 goto :ApplyChanges
 
 :InstallPlugY
-if "%PlugYSetupMenu%"=="D2gfx.dll" (
-	if "plugy"=="5.06" (
-		PlugY_Install.exe
-	) else (
-		PatchD2gfxDll.exe
-	)
+if "%PlugYSetupMode%"=="PatchD2File.exe" (
+	PatchD2File.exe
 	echo.Activated PlugY %plugy%
 )
 set "InstallPlugYDone=true"
@@ -463,7 +429,7 @@ goto :ApplyChanges
 
 :SetExe
 if not defined exe (
-	if "%PlugySetupMode%"=="PlugY.exe" (
+	if "%PlugYSetupMode%"=="PlugY.exe" (
 		set "exe=PlugY.exe"
 	) else (
 		set "exe=Game.exe"
