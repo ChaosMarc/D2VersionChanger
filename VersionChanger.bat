@@ -1,6 +1,6 @@
 @echo off
 
-set ChangerVersion=4.4
+set ChangerVersion=4.5
 set PlugYVersion=14.01
 
 title Diablo 2 Version Changer %ChangerVersion% by ChaosMarc
@@ -76,7 +76,6 @@ if defined invalidPlugYVersion (
 	echo.
 	goto :Pause
 )
-
 if defined plugy (
 	if not exist "VersionChanger\PlugY\%plugy%" (
 		echo.
@@ -98,6 +97,9 @@ if defined plugy (
 		
 	)
 )
+if not defined useNoCD (
+	set useNoCD=no
+)
 
 if defined StartGame goto :ApplyChanges
 
@@ -118,12 +120,14 @@ echo.	[6]   Apply changes
 echo.	[7]   Apply changes ^& start game
 echo.
 echo.	[8]   Fix 1.14 Installer MPQs (empty error window)
+echo.	[9]   Use NoCD for 1.00 - 1.11b [%useNoCD%]
 echo.
 echo.	[0]   Quit
 echo.
 echo.===============================================================================
-choice /C:123456780 /N /M "Enter Your Choice : "
-if errorlevel 9 goto :Quit
+choice /C:1234567890 /N /M "Enter Your Choice : "
+if errorlevel 10 goto :Quit
+if errorlevel 9 goto :UseNoCD
 if errorlevel 8 goto :FixMPQs
 if errorlevel 7 set StartGame=true && goto :ApplyChanges
 if errorlevel 6 goto :ApplyChanges
@@ -387,15 +391,25 @@ if defined plugy (
 	if not defined CopyPlugYDone goto :CopyPlugY
 	if not defined InstallPlugYDone goto :InstallPlugY
 )
+if not defined CopyNoCDDone goto :CopyNoCD
 if not defined SetExeDone goto :SetExe
 
 set "CopyFilesDone="
+set "CopyNoCDDone="
 set "CopyPlugYDone="
 set "InstallPlugYDone="
 set "SetExeDone="
 
 if defined StartGame goto :StartGame
 goto :Pause
+
+:UseNoCD
+if "%useNoCD%" == "yes" (
+    set useNoCD=no
+) else (
+	set useNoCD=yes
+)
+goto :MainMenu
 
 :FixMPQs
 VersionChanger\MPQFix\winmpq.exe d ..\..\d2char.mpq (attributes)
@@ -412,6 +426,14 @@ if defined mode if defined version (
 	echo.Changed version to %mode% %version%
 )
 goto :ApplyChanges
+
+:CopyNoCD
+if "%useNoCD%" == "yes" (
+	copy "VersionChanger\NoCD\%mode%\%version%\Game.exe" Game.exe >NUL
+	echo.Installed NoCD
+)
+set "CopyNoCDDone=true"
+goto ApplyChanges
 
 :CopyPlugY
 robocopy VersionChanger\PlugY\%plugy%\ . /s >NUL

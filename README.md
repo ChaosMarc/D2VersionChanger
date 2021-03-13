@@ -15,6 +15,8 @@ Run the VersionChanger.bat and select a number/character in square brackets at t
 For questions or suggestions please create an issue at [Github](https://github.com/ChaosMarc/D2VersionChanger) or email me: chaosmarc@gmx.de
 
 ## Changelog
+- v4.5
+    - Added NoCD Pack by GalaXyHaXz
 - v4.4
     - replaced PlugY v5.06 and v11.02 with v14.01
 - v4.3.2
