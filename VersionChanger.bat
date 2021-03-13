@@ -1,6 +1,6 @@
 @echo off
 
-set ChangerVersion=4.5
+set ChangerVersion=4.5.1
 set PlugYVersion=14.01
 
 title Diablo 2 Version Changer %ChangerVersion% by ChaosMarc
@@ -412,9 +412,10 @@ if "%useNoCD%" == "yes" (
 goto :MainMenu
 
 :FixMPQs
-VersionChanger\MPQFix\winmpq.exe d ..\..\d2char.mpq (attributes)
-VersionChanger\MPQFix\winmpq.exe d ..\..\d2data.mpq (attributes)
-VersionChanger\MPQFix\winmpq.exe d ..\..\d2sfx.mpq (attributes)
+regsvr32 /s VersionChanger\MPQFix\MSCOMCTL.OCX
+VersionChanger\MPQFix\WinMPQ.exe d ..\..\d2char.mpq (attributes)
+VersionChanger\MPQFix\WinMPQ.exe d ..\..\d2data.mpq (attributes)
+VersionChanger\MPQFix\WinMPQ.exe d ..\..\d2sfx.mpq (attributes)
 echo MPQs fixed. You can play now.
 goto :Pause
 
