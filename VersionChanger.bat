@@ -1,7 +1,7 @@
 @echo off
 
-set ChangerVersion=4.5.1
-set PlugYVersion=14.01
+set ChangerVersion=4.6
+set PlugYVersion=14.02
 
 title Diablo 2 Version Changer %ChangerVersion% by ChaosMarc
 setlocal EnableDelayedExpansion
